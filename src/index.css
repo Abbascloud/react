@@ -9,13 +9,25 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.container {
-    padding-top: 30px;
-    margin: 0 auto;
-    max-width: 1600px;
+button {
+    cursor: pointer;
 }
 
-.title {
-    color: red;
-    text-align: center;
+.container {
+
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.likesContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.messageLikes {
+    cursor: pointer;
+}
+
+.messageDisLikes {
+    cursor: pointer;
 }
