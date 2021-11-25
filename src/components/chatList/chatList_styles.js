@@ -1,12 +1,13 @@
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((ctx) => ({
-  wrapper: {
-    height: "100px",
-    position: "static !important",
-    padding: "15px",
+  chat_container: {
+    padding: "25px",
+    width: "20%",
   },
-  logo: {
+  chat_item: {
+    color: "#1976d2",
+    paddingTop: "30px",
     cursor: "pointer",
   },
 }));

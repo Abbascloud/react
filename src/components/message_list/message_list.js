@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Input, InputAdornment } from "@mui/material";
 import { Send } from "@mui/icons-material";
-import { useStyles } from "./message_styles";
+import { useStyles } from "./message_list_styles";
 import { Message } from "./message";
-import { ChatList } from "./chatList";
+import { nanoid } from "nanoid";
 
 export const MessageList = () => {
   const styles = useStyles();
@@ -12,6 +12,16 @@ export const MessageList = () => {
   const [message, setMessage] = useState("");
 
   const refMessage = useRef(null);
+  const refMessagesContainer = useRef(null);
+
+  useEffect(() => {
+    if (refMessagesContainer.current) {
+      refMessagesContainer.current.scrollTo(
+        0,
+        refMessagesContainer.current.scrollHeight
+      );
+    }
+  }, [messages]);
 
   useEffect(() => {
     refMessage.current?.focus();
@@ -36,7 +46,7 @@ export const MessageList = () => {
       setMessages([
         ...messages,
         {
-          id: messages.length,
+          id: nanoid(),
           author: "User",
           text: message,
           date: new Date(),
@@ -51,7 +61,7 @@ export const MessageList = () => {
     setMessages([
       ...messages,
       {
-        id: messages.length,
+        id: nanoid(),
         author: "System",
         text: "hello",
         date: new Date(),
@@ -65,32 +75,27 @@ export const MessageList = () => {
     }
   };
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.chatList_container}>
-        <ChatList />
+    <div className={styles.messageList_container}>
+      <div ref={refMessagesContainer} className={styles.messages}>
+        {messages.map((message) => (
+          <Message key={message.id} messageData={message} />
+        ))}
       </div>
-      <div className={styles.messageList_container}>
-        <Input
-          fullWidth
-          className={styles.input}
-          ref={refMessage}
-          value={message}
-          onChange={changeMessage}
-          onKeyPress={handlePressInput}
-          placeholder="enter ur message"
-          inputRef={(input) => input && input.focus()}
-          endAdornment={
-            <InputAdornment position="end">
-              <Send className={styles.icon} onClick={addMessage} />
-            </InputAdornment>
-          }
-        />
-        <div className={styles.messages}>
-          {messages.map((message) => (
-            <Message message={message} />
-          ))}
-        </div>
-      </div>
+      <Input
+        fullWidth
+        className={styles.input}
+        ref={refMessage}
+        value={message}
+        onChange={changeMessage}
+        onKeyPress={handlePressInput}
+        placeholder="enter ur message"
+        inputRef={(input) => input && input.focus()}
+        endAdornment={
+          <InputAdornment position="end">
+            <Send className={styles.icon} onClick={addMessage} />
+          </InputAdornment>
+        }
+      />
     </div>
   );
 };

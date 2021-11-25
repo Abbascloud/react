@@ -1,5 +1,5 @@
 import AppBar from "@mui/material/AppBar";
-
+import { Link } from "react-router-dom";
 import { useStyles } from "./header_styles";
 
 export const Header = () => {
@@ -8,7 +8,12 @@ export const Header = () => {
   return (
     <div>
       <AppBar className={styles.wrapper}>
-        <h1 className={styles.logo}>Chat</h1>
+        <Link className={styles.link} to="/">
+          Home
+        </Link>
+        <Link className={styles.link} to="/profile">
+          Profile
+        </Link>
       </AppBar>
     </div>
   );
