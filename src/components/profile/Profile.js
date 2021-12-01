@@ -1,68 +1,56 @@
 import { useStyles } from "./profile_styles";
 import Fab from "@mui/material/Fab";
-import NavigationIcon from "@mui/icons-material/Navigation";
-import {
-  changeGenderMale,
-  changeGenderFeemale,
-  changeGenderOther,
-} from "../../store/profile";
-
+import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
+import { togleVisibleProfile } from "../../store/profile";
+import { UserForm } from "./user_form";
 import { useSelector, useDispatch } from "react-redux";
 
 export const Profile = () => {
   const styles = useStyles();
-  const GenderValue = useSelector((state) => state.profile.genderValue);
+
+  const { ...profile } = useSelector((state) => {
+    return state.profile;
+  });
+
   const dispatch = useDispatch();
 
   return (
     <div className={styles.profileContainer}>
       <h1 className={styles.profileHeader}>Profile page</h1>
-      <form className={styles.genderForm}>
-        <div className={styles.boxes}>
-          <input
-            name="changeGender"
-            onClick={() => dispatch(changeGenderMale())}
-            value="male"
-            type="radio"
-            id="box-1"
-            className={styles.box}
-          />
-          <label for="box-1">Male</label>
+      <UserForm {...profile} />
 
-          <input
-            name="changeGender"
-            onClick={() => dispatch(changeGenderFeemale())}
-            value="female"
-            type="radio"
-            id="box-2"
-            className={styles.box}
-          />
-          <label for="box-2">Feemale </label>
-
-          <input
-            name="changeGender"
-            onClick={() => dispatch(changeGenderOther())}
-            value="other"
-            type="radio"
-            id="box-3"
-            className={styles.box}
-          />
-          <label for="box-3">Other</label>
+      <Fab
+        className={styles.fab}
+        onClick={() => dispatch(togleVisibleProfile())}
+        variant="extended"
+        size="small"
+        color="primary"
+        aria-label="add"
+      >
+        {!profile.isvisibleProfile && (
+          <div className={styles.fabContent}>
+            <ArrowCircleDownIcon sx={{ mr: 1 }} />
+            show user info
+          </div>
+        )}
+        {profile.isvisibleProfile && (
+          <div className={styles.fabContent}>
+            <ArrowCircleUpIcon sx={{ mr: 1 }} />
+            hide user info
+          </div>
+        )}
+      </Fab>
+      {profile.isvisibleProfile && (
+        <div>
+          <ul>
+            <li>first name: {profile.firstName}</li>
+            <li>second name: {profile.lastName}</li>
+            <li>phone number: {profile.phone}</li>
+            <li>gender: {profile.gender}</li>
+          </ul>
         </div>
-        <p>
-          confirm ur gender <b>{GenderValue}</b>
-        </p>
-        <Fab
-          className={styles.fab}
-          variant="extended"
-          size="small"
-          color="primary"
-          aria-label="add"
-        >
-          <NavigationIcon sx={{ mr: 1 }} />
-          confirm
-        </Fab>
-      </form>
+      )}
     </div>
   );
 };

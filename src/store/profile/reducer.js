@@ -1,28 +1,24 @@
-import {
-  CHANGE_GENDER_MALE,
-  CHANGE_GENDER_FEEMALE,
-  CHANGE_GENDER_OTHER,
-} from "./types";
+import { UPDATE_PROFILE, TOGLE_VISIBLE_PROFILE } from "./types";
 
-const initialState = { genderValue: "" };
+const initialState = {
+  firstName: "Abbas",
+  lastName: "Mamedov",
+  isvisibleProfile: false,
+  email: "email@mail.ru",
+  role: "admin",
+  phone: "89999999",
+  gender: "Male",
+};
 
 export const ProfileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CHANGE_GENDER_MALE:
-      return {
-        ...state,
-        genderValue: "male",
-      };
-    case CHANGE_GENDER_FEEMALE:
-      return {
-        ...state,
-        genderValue: "feemale",
-      };
-    case CHANGE_GENDER_OTHER:
-      return {
-        ...state,
-        genderValue: "other",
-      };
+    case TOGLE_VISIBLE_PROFILE: {
+      return { ...state, isvisibleProfile: !state.isvisibleProfile };
+    }
+    case UPDATE_PROFILE: {
+      return { ...state, ...action.payload };
+    }
+
     default:
       return state;
   }

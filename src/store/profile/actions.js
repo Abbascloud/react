@@ -1,9 +1,8 @@
-import {
-  CHANGE_GENDER_MALE,
-  CHANGE_GENDER_FEEMALE,
-  CHANGE_GENDER_OTHER,
-} from "./types";
+import { UPDATE_PROFILE, TOGLE_VISIBLE_PROFILE } from "./types";
 
-export const changeGenderMale = () => ({ type: CHANGE_GENDER_MALE });
-export const changeGenderFeemale = () => ({ type: CHANGE_GENDER_FEEMALE });
-export const changeGenderOther = () => ({ type: CHANGE_GENDER_OTHER });
+export const updateProfile = (profile) => {
+  return { type: UPDATE_PROFILE, payload: profile };
+};
+export const togleVisibleProfile = () => {
+  return { type: TOGLE_VISIBLE_PROFILE };
+};
