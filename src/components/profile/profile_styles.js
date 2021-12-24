@@ -19,13 +19,4 @@ export const useStyles = makeStyles((ctx) => ({
     color: `${ctx.palette.primary.main}`,
     fontSize: "35px",
   },
-  fab: {
-    marginTop: "15px !important",
-    paddingRight: "20px !important",
-    paddingLeft: "20px !important",
-  },
-  fabContent: {
-    display: "flex",
-    alignItems: "center",
-  },
 }));

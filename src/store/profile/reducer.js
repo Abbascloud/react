@@ -1,13 +1,13 @@
 import { UPDATE_PROFILE, TOGLE_VISIBLE_PROFILE } from "./types";
 
 const initialState = {
-  firstName: "Abbas",
-  lastName: "Mamedov",
+  firstName: "User",
+  lastName: "",
   isvisibleProfile: false,
-  email: "email@mail.ru",
-  role: "admin",
-  phone: "89999999",
-  gender: "Male",
+  email: "",
+  role: "",
+  phone: "",
+  gender: "",
 };
 
 export const ProfileReducer = (state = initialState, action) => {

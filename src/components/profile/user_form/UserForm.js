@@ -31,42 +31,42 @@ export function UserForm({ firstName, lastName, email, phone, gender }) {
       <input
         type="text"
         className={styles.changeName}
-        placeholder="first name"
+        placeholder="enter ur first name"
         data-name="firstName"
         id="changeFirstName"
         onChange={handleChangeForm}
       />
-      <label for="changeFirstName">first name</label>
+      <label htmlFor="changeFirstName">first name</label>
       <hr />
       <input
         type="text"
-        placeholder="last name"
+        placeholder="enter ur last name"
         data-name="lastName"
         className={styles.changeSername}
         id="changeSecondName"
         onChange={handleChangeForm}
       />
-      <label for="changeSecondName">second name:</label>
+      <label htmlFor="changeSecondName">second name:</label>
       <hr />
       <input
-        placeholder="phone number"
+        placeholder="enter ur phone number"
         type="tel"
         className={styles.changeSername}
         data-name="phone"
         id="changePhone"
         onChange={handleChangeForm}
       />
-      <label for="changePhone">phone number</label>
+      <label htmlFor="changePhone">phone number</label>
       <hr />
       <input
-        placeholder="email"
+        placeholder="enter ur email"
         type="email"
         className={styles.changeSername}
         data-name="email"
         id="changeEmail"
         onChange={handleChangeForm}
       />
-      <label for="changeEmail">email</label>
+      <label htmlFor="changeEmail">email</label>
       <hr />
       <div className={styles.GenderBoxes}>
         <input
@@ -78,7 +78,7 @@ export function UserForm({ firstName, lastName, email, phone, gender }) {
           onChange={handleChangeForm}
           data-name="gender"
         />
-        <label for="boxMale">Male</label>
+        <label htmlFor="boxMale">Male</label>
 
         <input
           name="changeGender"
@@ -89,7 +89,7 @@ export function UserForm({ firstName, lastName, email, phone, gender }) {
           onChange={handleChangeForm}
           data-name="gender"
         />
-        <label for="boxFeemale">Feemale </label>
+        <label htmlFor="boxFeemale">Feemale </label>
 
         <input
           name="changeGender"
@@ -100,7 +100,7 @@ export function UserForm({ firstName, lastName, email, phone, gender }) {
           onClick={handleChangeForm}
           data-name="gender"
         />
-        <label for="boxOther">Other</label>
+        <label htmlFor="boxOther">Other</label>
       </div>
       <p>
         confirm ur gender <b> </b>
