@@ -1,3 +1,2 @@
-export const CHANGE_GENDER_MALE = "changeGenderMale";
-export const CHANGE_GENDER_FEEMALE = "changeGenderFeemale";
-export const CHANGE_GENDER_OTHER = "changeGenderOther";
+export const UPDATE_PROFILE = "@profile/update profile";
+export const TOGLE_VISIBLE_PROFILE = "@profile/togle visible profile";
