@@ -1,0 +1,18 @@
+import { makeStyles } from "@mui/styles";
+
+export const useStyles = makeStyles((ctx) => ({
+  chat_container: {
+    margin: "25px 25px 0 0",
+  },
+  chat_item: {
+    color: "#1976d2",
+    cursor: "pointer",
+
+    padding: "15px",
+    border: `1px solid ${ctx.palette.primary.main}`,
+    boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+}));
