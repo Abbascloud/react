@@ -7,7 +7,7 @@ export const Home = () => {
     <div>
       <h1>Welcome to our chat</h1>
       <nav>
-        <Link className={styles.navLink} to="/msg_list">
+        <Link className={styles.navLink} to="/chat">
           Chat
         </Link>
         <Link className={styles.navLink} to="/profile">

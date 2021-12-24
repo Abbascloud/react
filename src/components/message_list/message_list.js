@@ -3,13 +3,15 @@ import { Input, InputAdornment } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useStyles } from "./message_list_styles";
 import { Message } from "./message";
-import { nanoid } from "nanoid";
+import { useParams } from "react-router";
 
 export const MessageList = () => {
+  const { roomId } = useParams();
   const styles = useStyles();
-  const [count, setCount] = useState(0);
-  const [messages, setMessages] = useState([]);
+
+  const [messages, setMessages] = useState({});
   const [message, setMessage] = useState("");
+  const roomMessages = messages[roomId] ?? [];
 
   const refMessage = useRef(null);
   const refMessagesContainer = useRef(null);
@@ -27,12 +29,14 @@ export const MessageList = () => {
     refMessage.current?.focus();
   }, []);
   useEffect(() => {
+    const roomMessages = messages[roomId] ?? [];
+    const lastMesssage = roomMessages[roomMessages.length - 1];
     let timerID = null;
-    if (messages.length && messages[messages.length - 1].author !== "System") {
+    if (roomMessages.length && lastMesssage.author !== "System") {
       timerID = setTimeout(addSysAnswer, 1500);
     }
     return () => clearInterval(timerID);
-  });
+  }, [messages, roomId]);
 
   const changeMessage = (event) => {
     setMessage(event.target.value);
@@ -43,31 +47,25 @@ export const MessageList = () => {
 
   const addMessage = () => {
     if (message) {
-      setMessages([
+      setMessages({
         ...messages,
-        {
-          id: nanoid(),
-          author: "User",
-          text: message,
-          date: new Date(),
-        },
-      ]);
-      setCount(count + 1);
+        [roomId]: [
+          ...(messages[roomId] ?? []),
+          { author: "User", text: message, date: new Date() },
+        ],
+      });
       clearInput();
     }
   };
 
   const addSysAnswer = () => {
-    setMessages([
+    setMessages({
       ...messages,
-      {
-        id: nanoid(),
-        author: "System",
-        text: "hello",
-        date: new Date(),
-      },
-    ]);
-    setCount(count + 1);
+      [roomId]: [
+        ...(messages[roomId] ?? []),
+        { author: "System", text: "hello", date: new Date() },
+      ],
+    });
   };
   const handlePressInput = ({ code }) => {
     if (code === "Enter") {
@@ -77,7 +75,7 @@ export const MessageList = () => {
   return (
     <div className={styles.messageList_container}>
       <div ref={refMessagesContainer} className={styles.messages}>
-        {messages.map((message) => (
+        {roomMessages.map((message) => (
           <Message key={message.id} messageData={message} />
         ))}
       </div>
