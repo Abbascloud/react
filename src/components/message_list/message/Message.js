@@ -1,10 +1,18 @@
 import { useStyles } from "./message_styles";
+import { format } from "date-fns";
+import Button from "@mui/material/Button";
 
-export const Message = ({ messageData }) => {
+import { removeMessageById } from "../../../store/messages";
+
+export const Message = ({ messageData, dispatch, roomId }) => {
   const styles = useStyles();
 
+  const removeMessage = () => {
+    dispatch(removeMessageById(messageData.id, roomId));
+  };
+
   const checkAuthor = (message) => {
-    if (message.author === "System") {
+    if (message.author === "Bot") {
       return styles.systemMessage;
     } else {
       return styles.userMessage;
@@ -13,8 +21,11 @@ export const Message = ({ messageData }) => {
   return (
     <div className={checkAuthor(messageData)}>
       <h3>{messageData.author}</h3>
-      <p>{messageData.text}</p>
-      <p>01 01 2000</p>
+      <p>{messageData.message}</p>
+      <p>{format(new Date(messageData.date), "yyyy-MM-dd HH:MM:SS")}</p>
+      <Button onClick={removeMessage} variant="contained">
+        Remove message
+      </Button>
     </div>
   );
 };

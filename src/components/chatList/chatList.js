@@ -1,31 +1,64 @@
 import { useStyles } from "./chatList_styles";
-import { Avatar, AvatarGroup } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { conversationsSelector } from "../../store/conversations";
+import { useSelector } from "react-redux";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useState } from "react";
-import { nanoid } from "nanoid";
+import { createConversation } from "../../store/conversations";
+import { useDispatch } from "react-redux";
+import { Chat } from "./chat";
+import { useParams } from "react-router-dom";
 
 export const ChatList = () => {
-  const { roomId } = useParams();
-  const [chats] = useState([
-    { name: "room1", id: nanoid() },
-    { name: "room2", id: nanoid() },
-    { name: "room3", id: nanoid() },
-  ]);
-
+  const chats = useSelector(conversationsSelector);
   const styles = useStyles();
+  const dispatch = useDispatch();
+  const [chatName, setChatName] = useState("");
+  const { roomId } = useParams();
+
+  const checkNameValide = () => {
+    for (let i = 0; i < chats.length; i++) {
+      if (chats[i].name === chatName) {
+        return false;
+      }
+    }
+    return true;
+  };
+  const addChatListItem = () => {
+    if (chatName && checkNameValide()) {
+      dispatch(createConversation(chatName));
+    }
+  };
 
   return (
     <div className={styles.chat_container}>
-      {chats.map((chat) => (
-        <Link key={chat.id} to={`/chat/${chat.name}`}>
-          <div selected={chat.name === roomId} className={styles.chat_item}>
-            <p>{chat.name}</p>|<time>21.21.21</time>|
-            <AvatarGroup className={styles.avatarGroup} max={2}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </AvatarGroup>
-          </div>
-        </Link>
-      ))}
+      <div className={styles.add_chat}>
+        <div className={styles.chat_item}>
+          <p>Add chat</p>|
+          <input
+            placeholder="enter chat name"
+            type="text"
+            value={chatName}
+            onChange={(event) => {
+              setChatName(event.target.value);
+            }}
+          />
+          |
+          <AddCircleIcon
+            className={styles.add_chat_button}
+            onClick={addChatListItem}
+          />
+        </div>
+      </div>
+      <div>
+        {chats.map((chat) => (
+          <Chat
+            key={chat.id}
+            chatData={chat}
+            dispatch={dispatch}
+            roomId={roomId}
+          />
+        ))}
+      </div>
     </div>
   );
 };

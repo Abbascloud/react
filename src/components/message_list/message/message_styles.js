@@ -4,7 +4,7 @@ export const useStyles = makeStyles((ctx) => ({
   userMessage: {
     width: "40%",
     marginLeft: "auto",
-    textAlign: "right",
+    textAlign: "left",
     border: "1px solid grey",
     borderRadius: "10px",
     padding: "10px",

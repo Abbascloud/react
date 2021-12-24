@@ -1,96 +1,84 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Input, InputAdornment } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useStyles } from "./message_list_styles";
 import { Message } from "./message";
 import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { profileSelector } from "../../store/profile";
+import { messagesSelector, sendBotMessageByThunk } from "../../store/messages";
 
 export const MessageList = () => {
   const { roomId } = useParams();
+
   const styles = useStyles();
+  const messages = useSelector(messagesSelector(roomId));
 
-  const [messages, setMessages] = useState({});
-  const [message, setMessage] = useState("");
-  const roomMessages = messages[roomId] ?? [];
+  const [value, setValue] = useState("");
+  const user = useSelector(profileSelector);
 
-  const refMessage = useRef(null);
-  const refMessagesContainer = useRef(null);
+  const dispatch = useDispatch();
+
+  const ref = useRef(null);
+  const refWrapper = useRef(null);
+
+  const send = useCallback(
+    (messageAuthor, messageText) => {
+      if (messageText) {
+        dispatch(
+          sendBotMessageByThunk(
+            { author: messageAuthor, message: messageText },
+            roomId
+          )
+        );
+        setValue("");
+      }
+    },
+    [roomId, dispatch]
+  );
 
   useEffect(() => {
-    if (refMessagesContainer.current) {
-      refMessagesContainer.current.scrollTo(
-        0,
-        refMessagesContainer.current.scrollHeight
-      );
+    if (refWrapper.current) {
+      refWrapper.current.scrollTo(0, refWrapper.current.scrollHeight);
     }
   }, [messages]);
 
+  const makeMessage = () => {
+    send(user.firstName, value);
+  };
+
   useEffect(() => {
-    refMessage.current?.focus();
+    ref.current?.focus();
   }, []);
-  useEffect(() => {
-    const roomMessages = messages[roomId] ?? [];
-    const lastMesssage = roomMessages[roomMessages.length - 1];
-    let timerID = null;
-    if (roomMessages.length && lastMesssage.author !== "System") {
-      timerID = setTimeout(addSysAnswer, 1500);
-    }
-    return () => clearInterval(timerID);
-  }, [messages, roomId]);
 
-  const changeMessage = (event) => {
-    setMessage(event.target.value);
-  };
-  const clearInput = () => {
-    setMessage("");
-  };
-
-  const addMessage = () => {
-    if (message) {
-      setMessages({
-        ...messages,
-        [roomId]: [
-          ...(messages[roomId] ?? []),
-          { author: "User", text: message, date: new Date() },
-        ],
-      });
-      clearInput();
-    }
-  };
-
-  const addSysAnswer = () => {
-    setMessages({
-      ...messages,
-      [roomId]: [
-        ...(messages[roomId] ?? []),
-        { author: "System", text: "hello", date: new Date() },
-      ],
-    });
-  };
   const handlePressInput = ({ code }) => {
     if (code === "Enter") {
-      addMessage();
+      makeMessage();
     }
   };
+
   return (
     <div className={styles.messageList_container}>
-      <div ref={refMessagesContainer} className={styles.messages}>
-        {roomMessages.map((message) => (
-          <Message key={message.id} messageData={message} />
+      <div ref={refWrapper} className={styles.messages}>
+        {messages.map((message) => (
+          <Message
+            key={message.id}
+            messageData={{ ...message }}
+            roomId={roomId}
+            dispatch={dispatch}
+          />
         ))}
       </div>
       <Input
         fullWidth
         className={styles.input}
-        ref={refMessage}
-        value={message}
-        onChange={changeMessage}
+        onChange={(e) => setValue(e.target.value)}
         onKeyPress={handlePressInput}
         placeholder="enter ur message"
         inputRef={(input) => input && input.focus()}
         endAdornment={
           <InputAdornment position="end">
-            <Send className={styles.icon} onClick={addMessage} />
+            <Send className={styles.icon} onClick={makeMessage} />
           </InputAdornment>
         }
       />

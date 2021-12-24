@@ -4,3 +4,4 @@ export * from "./chatList";
 export * from "./home";
 export * from "./profile";
 export * from "./layout";
+export * from "./chat_landing";
